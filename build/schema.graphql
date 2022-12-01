@@ -1,0 +1,32 @@
+type Account @entity {
+  id: ID!
+  profileID: Bytes! # bytes32
+}
+
+type Profile @entity(immutable: true) {
+  id: ID!
+  profileID: Bytes! # bytes32
+  profileTimestamp: BigInt!
+  creatorAddress: Bytes! # address
+  profileDataCID: String! # string
+  firstName: String
+  jobTitle: String
+  city: String
+  country: String
+  website: String
+  facebookPage: String
+  facebookGroup: String
+  twitter: String
+  instagram: String
+  pinterest: String
+  tiktok: String
+  linkedin: String
+  freebie: String
+  otherLink: String
+  bio: String
+  imageURL: String
+  isDisabled: Boolean! # bool
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

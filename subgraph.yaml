@@ -1,0 +1,29 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+features:
+  - ipfsOnEthereumContracts
+dataSources:
+  - kind: ethereum
+    name: Profiles
+    network: mumbai
+    source:
+      address: "0x361de48197120A4678abDAC2b153D16146E26f14"
+      abi: Profiles
+      startBlock: 29416034
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Account
+        - Profile
+      abis:
+        - name: Profiles
+          file: ./abis/Profiles.json
+      eventHandlers:
+        - event: DisableProfile(bytes32,bool)
+          handler: handleDisableProfile
+        - event: NewProfileCreated(bytes32,address,string,bool)
+          handler: handleNewProfileCreated
+      file: ./src/profiles.ts
