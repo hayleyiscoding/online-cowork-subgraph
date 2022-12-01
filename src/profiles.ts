@@ -2,7 +2,7 @@ import {
   DisableProfile as DisableProfileEvent,
   NewProfileCreated as NewProfileCreatedEvent,
 } from "../generated/Profiles/Profiles";
-import { Address, ipfs, json, JSONValue, JSONValueKind, log, TypedMap } from "@graphprotocol/graph-ts";
+import { Address, Bytes, ipfs, json, JSONValue, JSONValueKind, log, TypedMap } from "@graphprotocol/graph-ts";
 import { Account, Profile } from "../generated/schema";
 
 export function handleDisableEvent(event: DisableProfileEvent): void {
@@ -36,7 +36,12 @@ function valueToObject(value: JSONValue): TypedMap<string, JSONValue> | null {
 }
 
 export function handleNewProfileCreated(event: NewProfileCreatedEvent): void {
-  let newProfile = new Profile(event.params.profileID.toHex());
+  let newProfile = Profile.load(event.params.profileID.toHex());
+
+  if (newProfile == null) {
+    newProfile = new Profile(event.params.profileID.toHex());
+  }
+
   newProfile.profileID = event.params.profileID;
   newProfile.profileDataCID = event.params.profileDataCID;
   newProfile.creatorAddress = event.params.creatorAddress;
@@ -127,9 +132,9 @@ export function handleNewProfileCreated(event: NewProfileCreatedEvent): void {
         }
       }
     }
-
-    newProfile.save();
   }
+
+  newProfile.save();
 }
 
 // function getOrCreateAccount(address: Address): Account {

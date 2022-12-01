@@ -3,10 +3,9 @@ type Account @entity {
   profileID: Bytes! # bytes32
 }
 
-type Profile @entity(immutable: true) {
+type Profile @entity {
   id: ID!
   profileID: Bytes! # bytes32
-  profileTimestamp: BigInt!
   creatorAddress: Bytes! # address
   profileDataCID: String! # string
   firstName: String
