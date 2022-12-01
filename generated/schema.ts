@@ -92,15 +92,6 @@ export class Profile extends Entity {
     this.set("profileID", Value.fromBytes(value));
   }
 
-  get profileTimestamp(): BigInt {
-    let value = this.get("profileTimestamp");
-    return value!.toBigInt();
-  }
-
-  set profileTimestamp(value: BigInt) {
-    this.set("profileTimestamp", Value.fromBigInt(value));
-  }
-
   get creatorAddress(): Bytes {
     let value = this.get("creatorAddress");
     return value!.toBytes();
