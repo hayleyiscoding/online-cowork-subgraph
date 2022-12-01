@@ -6,7 +6,6 @@ type Account @entity {
 type Profile @entity(immutable: true) {
   id: ID!
   profileID: Bytes! # bytes32
-  profileTimestamp: BigInt!
   creatorAddress: Bytes! # address
   profileDataCID: String! # string
   firstName: String
