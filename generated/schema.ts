@@ -110,6 +110,108 @@ export class Profile extends Entity {
     this.set("profileDataCID", Value.fromString(value));
   }
 
+  get isDisabled(): boolean {
+    let value = this.get("isDisabled");
+    return value!.toBoolean();
+  }
+
+  set isDisabled(value: boolean) {
+    this.set("isDisabled", Value.fromBoolean(value));
+  }
+
+  get blockNumber(): BigInt {
+    let value = this.get("blockNumber");
+    return value!.toBigInt();
+  }
+
+  set blockNumber(value: BigInt) {
+    this.set("blockNumber", Value.fromBigInt(value));
+  }
+
+  get blockTimestamp(): BigInt {
+    let value = this.get("blockTimestamp");
+    return value!.toBigInt();
+  }
+
+  set blockTimestamp(value: BigInt) {
+    this.set("blockTimestamp", Value.fromBigInt(value));
+  }
+
+  get transactionHash(): Bytes {
+    let value = this.get("transactionHash");
+    return value!.toBytes();
+  }
+
+  set transactionHash(value: Bytes) {
+    this.set("transactionHash", Value.fromBytes(value));
+  }
+
+  get ipfsCID(): string | null {
+    let value = this.get("ipfsCID");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set ipfsCID(value: string | null) {
+    if (!value) {
+      this.unset("ipfsCID");
+    } else {
+      this.set("ipfsCID", Value.fromString(<string>value));
+    }
+  }
+
+  get profileMetadata(): string | null {
+    let value = this.get("profileMetadata");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set profileMetadata(value: string | null) {
+    if (!value) {
+      this.unset("profileMetadata");
+    } else {
+      this.set("profileMetadata", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class ProfileMetadata extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save ProfileMetadata entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type ProfileMetadata must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("ProfileMetadata", id.toString(), this);
+    }
+  }
+
+  static load(id: string): ProfileMetadata | null {
+    return changetype<ProfileMetadata | null>(store.get("ProfileMetadata", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
   get firstName(): string | null {
     let value = this.get("firstName");
     if (!value || value.kind == ValueKind.NULL) {
@@ -380,41 +482,5 @@ export class Profile extends Entity {
     } else {
       this.set("imageURL", Value.fromString(<string>value));
     }
-  }
-
-  get isDisabled(): boolean {
-    let value = this.get("isDisabled");
-    return value!.toBoolean();
-  }
-
-  set isDisabled(value: boolean) {
-    this.set("isDisabled", Value.fromBoolean(value));
-  }
-
-  get blockNumber(): BigInt {
-    let value = this.get("blockNumber");
-    return value!.toBigInt();
-  }
-
-  set blockNumber(value: BigInt) {
-    this.set("blockNumber", Value.fromBigInt(value));
-  }
-
-  get blockTimestamp(): BigInt {
-    let value = this.get("blockTimestamp");
-    return value!.toBigInt();
-  }
-
-  set blockTimestamp(value: BigInt) {
-    this.set("blockTimestamp", Value.fromBigInt(value));
-  }
-
-  get transactionHash(): Bytes {
-    let value = this.get("transactionHash");
-    return value!.toBytes();
-  }
-
-  set transactionHash(value: Bytes) {
-    this.set("transactionHash", Value.fromBytes(value));
   }
 }

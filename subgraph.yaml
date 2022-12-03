@@ -27,3 +27,16 @@ dataSources:
         - event: NewProfileCreated(bytes32,address,string,bool)
           handler: handleNewProfileCreated
       file: ./src/profiles.ts
+templates:
+  - name: Profile
+    kind: file/ipfs
+    mapping:
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/profiles.ts
+      handler: handleProfileMetadata
+      entities:
+        - Profile
+      abis:
+        - name: Profiles
+          file: ./abis/Profiles.json

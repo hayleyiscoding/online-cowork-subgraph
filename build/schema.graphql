@@ -8,6 +8,16 @@ type Profile @entity {
   profileID: Bytes! # bytes32
   creatorAddress: Bytes! # address
   profileDataCID: String! # string
+  isDisabled: Boolean! # bool
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+  ipfsCID: String
+  profileMetadata: ProfileMetadata
+}
+
+type ProfileMetadata @entity {
+  id: ID!
   firstName: String
   jobTitle: String
   city: String
@@ -24,8 +34,4 @@ type Profile @entity {
   otherLink: String
   bio: String
   imageURL: String
-  isDisabled: Boolean! # bool
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
 }
