@@ -7,6 +7,8 @@ import {
 import { Account, Profile, ProfileMetadata } from "../generated/schema";
 import { Profile as ProfileMetadataTemplate } from "../generated/templates";
 
+const DATA_FILE_NAME = "/data.json";
+
 export function handleDisableEvent(event: DisableProfileEvent): void {
   let singleProfile = Profile.load(event.params.profileID.toHex());
   if (singleProfile) {
@@ -32,7 +34,7 @@ export function handleNewProfileCreated(event: NewProfileCreatedEvent): void {
   const ipfsCID = event.params.profileDataCID.toString();
   newProfile.ipfsCID = ipfsCID;
   if (ipfsCID) {
-    let uri = event.params.profileDataCID.toString() + "/data.json";
+    let uri = event.params.profileDataCID.toString() + DATA_FILE_NAME;
     newProfile.profileMetadata = uri;
     ProfileMetadataTemplate.create(uri);
   }
@@ -108,15 +110,17 @@ export function handleProfileMetadata(content: Bytes): void {
       profileMetadata.bio = bio.toString();
     }
 
-    // if (imagePath) {
-    //   const imageURL = "https://ipfs.io/ipfs/" + event.params.profileDataCID + imagePath.toString();
-    //   profileMetadata.imageURL = imageURL;
-    // } else {
-    //   // return fallback image if no imagePath
-    //   const fallbackURL =
-    //     "https://ipfs.io/ipfs/bafybeibssbrlptcefbqfh4vpw2wlmqfj2kgxt3nil4yujxbmdznau3t5wi/event.png";
-    //   profileMetadata.imageURL = fallbackURL;
-    // }
+    const cid = dataSource.stringParam().split("/");
+
+    if (imagePath) {
+      const imageURL =
+        "https://ipfs.io/ipfs/" + dataSource.stringParam().replace(DATA_FILE_NAME, "") + imagePath.toString();
+      profileMetadata.imageURL = imageURL;
+    } else {
+      // return fallback image if no imagePath
+      const fallbackURL = "https://ipfs.io/ipfs/bafybeibssbrlptcefbqfh4vpw2wlmqfj2kgxt3nil4yujxbmdznau3t5wi/event.png";
+      profileMetadata.imageURL = fallbackURL;
+    }
   }
   profileMetadata.save();
 }
